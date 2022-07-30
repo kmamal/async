@@ -11,5 +11,20 @@
     "test": "./scripts/run-tests.sh",
     "update-exports": "./scripts/update-exports.sh"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "exports": {
+    "./future": "./src/future.js",
+    "./token-bucket": "./src/token-bucket.js",
+    "./limiter": "./src/limiter.js",
+    "./watchdog": "./src/watchdog.js",
+    "./semaphore": "./src/semaphore.js",
+    "./deferred": "./src/deferred.js",
+    "./object-pool": "./src/object-pool.js"
+  },
+  "devDependencies": {
+    "@kmamal/testing": "^0.0.20"
+  },
+  "dependencies": {
+    "@kmamal/util": "^0.1.6"
+  }
 }
