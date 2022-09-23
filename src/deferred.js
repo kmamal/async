@@ -24,9 +24,15 @@ class Deferred {
 		}
 
 		this._state = Deferred.State.PRODUCING
-		const value = await callback(this._params)
-		this._state = Deferred.State.PRODUCED
-		this._future.resolve(value)
+
+		try {
+			const value = await callback(this._params)
+			this._state = Deferred.State.PRODUCED
+			this._future.resolve(value)
+		} catch (error) {
+			this._state = Deferred.State.PRODUCED
+			this._future.reject(error)
+		}
 	}
 
 	static State = {
@@ -39,6 +45,13 @@ class Deferred {
 		const deferred = new Deferred()
 		deferred._state = Deferred.State.PRODUCED
 		deferred._future.resolve(value)
+		return deferred
+	}
+
+	static reject (reason) {
+		const deferred = new Deferred()
+		deferred._state = Deferred.State.PRODUCED
+		deferred._future.reject(reason)
 		return deferred
 	}
 }
