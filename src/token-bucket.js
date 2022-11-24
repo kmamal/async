@@ -23,7 +23,7 @@ class TokenBucket {
 		}
 	}
 
-	async reserve (dec) {
+	async reserve (dec, priority = false) {
 		await new Promise((resolve) => {
 			if (this._count >= dec) {
 				this._count -= dec
@@ -31,7 +31,12 @@ class TokenBucket {
 				return
 			}
 
-			this._queue.push({ dec, resolve })
+			const entry = { dec, resolve }
+			if (priority) {
+				this._queue.unshift(entry)
+			} else {
+				this._queue.push(entry)
+			}
 		})
 	}
 }
