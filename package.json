@@ -4,11 +4,10 @@
   "description": "async",
   "repository": {
     "type": "git",
-    "url": "git@github.com:kmamal/async.git"
+    "url": "git+ssh://git@github.com:kmamal/async.git"
   },
-  "main": "src/index.js",
   "scripts": {
-    "test": "./scripts/run-tests.sh",
+    "test": "npx -p @kmamal/testing testing",
     "update-exports": "node ./scripts/update-exports.mjs"
   },
   "license": "MIT",
@@ -18,13 +17,11 @@
     "./limiter": "./src/limiter.js",
     "./watchdog": "./src/watchdog.js",
     "./semaphore": "./src/semaphore.js",
+    "./openable": "./src/openable.js",
     "./deferred": "./src/deferred.js",
     "./object-pool": "./src/object-pool.js"
   },
   "devDependencies": {
-    "@kmamal/testing": "^0.0.20"
-  },
-  "dependencies": {
-    "@kmamal/util": "^0.1.6"
+    "@kmamal/testing": "^0.0.30"
   }
 }

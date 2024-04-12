@@ -1,6 +1,6 @@
 const { test } = require('@kmamal/testing')
 const { ObjectPool } = require('./object-pool')
-const _ = require('@kmamal/util')
+const { sleep } = require('@kmamal/util/promise/sleep')
 
 test("structs.object-pool", async (t) => {
 	t.timeout(500)
@@ -21,9 +21,9 @@ test("structs.object-pool", async (t) => {
 	a.reserve().then((x) => { s.step(x) })
 	a.reserve().then((x) => { s.step(x) })
 
-	await _.sleep(50)
+	await sleep(50)
 	a.release(3)
 
-	await _.sleep(50)
+	await sleep(50)
 	a.release(4)
 })
