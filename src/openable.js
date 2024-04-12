@@ -1,33 +1,50 @@
-const { Future } = require('./future')
 
 class Openable {
 	constructor () {
 		this._state = 'closed'
-		this._stateTransitionFuture = null
+		this._stateTransitionPromise = null
 	}
 
-	stateTransitionFinished () { return this._stateTransitionFuture.promise() }
+	state () { return this._state }
+	stateTransitionFinished () { return this._stateTransitionPromise }
 
-	__beginOpen () {
-		if (!this._state === 'closed') { throw new Error("invalid state") }
+	async open (fn) {
+		if (this._state !== 'closed') {
+			throw Object.assign(new Error("invalid state"), {
+				state: this._state,
+				action: 'open',
+			})
+		}
 		this._state = 'opening'
-		this._stateTransitionFuture = new Future()
-	}
-
-	__endOpen () {
-		this._stateTransitionFuture.resolve()
+		try {
+			await (this._stateTransitionPromise = fn())
+		} catch (error) {
+			this._state = 'error'
+			throw error
+		}
 		this._state = 'open'
 	}
 
-	__beginClose () {
-		if (!this._state === 'open') { throw new Error("invalid state") }
+	async close (fn) {
+		if (this._state !== 'open') {
+			throw Object.assign(new Error("invalid state"), {
+				state: this._state,
+				action: 'close',
+			})
+		}
 		this._state = 'closing'
-		this._stateTransitionFuture = new Future()
+		try {
+			await (this._stateTransitionPromise = fn())
+		} catch (error) {
+			this._state = 'error'
+			throw error
+		}
+		this._state = 'closed'
 	}
 
-	__endClose () {
-		this._stateTransitionFuture.resolve()
-		this._state = 'closed'
+	resetState (state) {
+		this._state = state
+		this._stateTransitionPromise = null
 	}
 }
 
