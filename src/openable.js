@@ -8,43 +8,37 @@ class Openable {
 	state () { return this._state }
 	stateTransitionFinished () { return this._stateTransitionPromise }
 
-	async open (fn) {
-		if (this._state !== 'closed') {
-			throw Object.assign(new Error("invalid state"), {
-				state: this._state,
-				action: 'open',
-			})
-		}
-		this._state = 'opening'
-		try {
-			await (this._stateTransitionPromise = fn())
-		} catch (error) {
-			this._state = 'error'
-			throw error
-		}
-		this._state = 'open'
+	open (fn) {
+		return this._doStateTransition('open', fn, 'closed', 'opening', 'open')
 	}
 
-	async close (fn) {
-		if (this._state !== 'open') {
-			throw Object.assign(new Error("invalid state"), {
-				state: this._state,
-				action: 'close',
-			})
-		}
-		this._state = 'closing'
-		try {
-			await (this._stateTransitionPromise = fn())
-		} catch (error) {
-			this._state = 'error'
-			throw error
-		}
-		this._state = 'closed'
+	close (fn) {
+		return this._doStateTransition('close', fn, 'open', 'closing', 'closed')
 	}
 
 	resetState (state) {
 		this._state = state
 		this._stateTransitionPromise = null
+	}
+
+	_doStateTransition (action, fn, a, b, c) {
+		if (this._state !== a) {
+			throw Object.assign(new Error("invalid state"), {
+				state: this._state,
+				action,
+			})
+		}
+		this._state = b
+		this._stateTransitionPromise = (async () => {
+			try {
+				await fn()
+			} catch (error) {
+				this._state = 'error'
+				throw error
+			}
+			this._state = c
+		})()
+		return this._stateTransitionPromise
 	}
 }
 
