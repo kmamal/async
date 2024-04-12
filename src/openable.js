@@ -8,12 +8,12 @@ class Openable {
 	state () { return this._state }
 	stateTransitionFinished () { return this._stateTransitionPromise }
 
-	open (fn) {
-		return this._doStateTransition('open', fn, 'closed', 'opening', 'open')
+	async open (fn) {
+		await this._doStateTransition('open', fn, 'closed', 'opening', 'open')
 	}
 
-	close (fn) {
-		return this._doStateTransition('close', fn, 'open', 'closing', 'closed')
+	async close (fn) {
+		await this._doStateTransition('close', fn, 'open', 'closing', 'closed')
 	}
 
 	resetState (state) {
@@ -21,7 +21,7 @@ class Openable {
 		this._stateTransitionPromise = null
 	}
 
-	_doStateTransition (action, fn, a, b, c) {
+	async _doStateTransition (action, fn, a, b, c) {
 		if (this._state !== a) {
 			throw Object.assign(new Error("invalid state"), {
 				state: this._state,
@@ -29,16 +29,13 @@ class Openable {
 			})
 		}
 		this._state = b
-		this._stateTransitionPromise = (async () => {
-			try {
-				await fn()
-			} catch (error) {
-				this._state = 'error'
-				throw error
-			}
-			this._state = c
-		})()
-		return this._stateTransitionPromise
+		try {
+			await (this._stateTransitionPromise = fn())
+		} catch (error) {
+			this._state = 'error'
+			throw error
+		}
+		this._state = c
 	}
 }
 
