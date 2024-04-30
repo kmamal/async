@@ -17,8 +17,9 @@
     "./limiter": "./src/limiter.js",
     "./watchdog": "./src/watchdog.js",
     "./semaphore": "./src/semaphore.js",
-    "./openable": "./src/openable.js",
+    "./task-queue": "./src/task-queue.js",
     "./deferred": "./src/deferred.js",
+    "./opener": "./src/opener.js",
     "./object-pool": "./src/object-pool.js"
   },
   "devDependencies": {

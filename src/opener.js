@@ -1,5 +1,5 @@
 
-class Openable {
+class Opener {
 	constructor () {
 		this._state = 'closed'
 		this._stateTransitionPromise = null
@@ -39,4 +39,4 @@ class Openable {
 	}
 }
 
-module.exports = { Openable }
+module.exports = { Opener }
