@@ -5,6 +5,8 @@ class TaskQueue {
 		this._promise = null
 	}
 
+	size () { return this._queue.length }
+
 	run (fn) {
 		return new Promise((resolve, reject) => {
 			this._queue.push({ fn, resolve, reject })
