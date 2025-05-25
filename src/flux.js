@@ -11,6 +11,8 @@ class Flux {
 		this._future = new Future()
 	}
 
+	promise () { return this._future.promise() }
+
 	settle (value) {
 		if (this._state === Flux.State.SETTLED) { this.unsettle() }
 
