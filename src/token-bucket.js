@@ -32,11 +32,8 @@ class TokenBucket {
 			}
 
 			const entry = { dec, resolve }
-			if (priority) {
-				this._queue.unshift(entry)
-			} else {
-				this._queue.push(entry)
-			}
+			if (priority) { this._queue.unshift(entry) }
+			else { this._queue.push(entry) }
 		})
 	}
 }

@@ -3,22 +3,11 @@ const { TokenBucket } = require('./token-bucket')
 class Limiter {
 	constructor (capacity, increment, interval, prefill = true) {
 		this._capacity = capacity
-
 		this._increment = increment
 		this._interval = interval
-		if (this._increment > this._capacity) {
-			const ratio = this._capacity / this._increment
-			this._increment = this._capacity
-			this._interval = Math.floor(this._interval * ratio)
-		}
-
-		this._bucket = new TokenBucket()
-
-		if (prefill) {
-			this._bucket.release(capacity)
-		}
-
 		this._timer = null
+		this._bucket = new TokenBucket()
+		if (prefill) { this._bucket.release(capacity) }
 	}
 
 	_startUpdating () {

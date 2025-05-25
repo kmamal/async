@@ -29,7 +29,8 @@ class Deferred {
 			const value = await callback(this._params)
 			this._state = Deferred.State.PRODUCED
 			this._future.resolve(value)
-		} catch (error) {
+		}
+		catch (error) {
 			this._state = Deferred.State.PRODUCED
 			this._future.reject(error)
 		}

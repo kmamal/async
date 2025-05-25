@@ -49,7 +49,8 @@ class Semaphore {
 				callback()
 
 				if (this._value === 0) { break }
-			} else {
+			}
+			else {
 				this._blocked.push(entry)
 			}
 		}

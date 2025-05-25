@@ -17,6 +17,8 @@
     "./limiter": "./src/limiter.js",
     "./watchdog": "./src/watchdog.js",
     "./semaphore": "./src/semaphore.js",
+    "./synchronized": "./src/synchronized.js",
+    "./flux": "./src/flux.js",
     "./task-queue": "./src/task-queue.js",
     "./deferred": "./src/deferred.js",
     "./opener": "./src/opener.js",
