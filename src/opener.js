@@ -31,7 +31,8 @@ class Opener {
 		this._state = b
 		try {
 			await (this._stateTransitionPromise = fn())
-		} catch (error) {
+		}
+		catch (error) {
 			this._state = 'error'
 			throw error
 		}
