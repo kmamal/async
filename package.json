@@ -12,19 +12,19 @@
   },
   "license": "MIT",
   "exports": {
-    "./future": "./src/future.js",
-    "./token-bucket": "./src/token-bucket.js",
-    "./limiter": "./src/limiter.js",
-    "./watchdog": "./src/watchdog.js",
-    "./semaphore": "./src/semaphore.js",
     "./synchronized": "./src/synchronized.js",
     "./flux": "./src/flux.js",
+    "./limiter": "./src/limiter.js",
     "./task-queue": "./src/task-queue.js",
-    "./deferred": "./src/deferred.js",
+    "./future": "./src/future.js",
+    "./watchdog": "./src/watchdog.js",
     "./opener": "./src/opener.js",
-    "./object-pool": "./src/object-pool.js"
+    "./token-bucket": "./src/token-bucket.js",
+    "./semaphore": "./src/semaphore.js",
+    "./object-pool": "./src/object-pool.js",
+    "./deferred": "./src/deferred.js"
   },
   "devDependencies": {
-    "@kmamal/testing": "^0.0.30"
+    "@kmamal/testing": "^0.0.33"
   }
 }
