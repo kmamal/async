@@ -23,7 +23,8 @@ class TaskQueue {
 			const { fn, resolve, reject } = this._queue.shift()
 			try {
 				resolve(await fn())
-			} catch (error) {
+			}
+			catch (error) {
 				reject(error)
 			}
 		}

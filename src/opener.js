@@ -40,4 +40,30 @@ class Opener {
 	}
 }
 
-module.exports = { Opener }
+class AbortableOpener extends Opener {
+	constructor () {
+		super()
+		this._ac = null
+	}
+
+	async open (fn) {
+		await this.super.open(async () => {
+			this._ac = new AbortController()
+			try { await fn(this._ac.signal) }
+			finally { this._ac = null }
+		})
+	}
+
+	async close (fn) {
+		if (this._ac) {
+			this._ac.abort()
+			await this.stateTransitionFinished()
+		}
+		await this.super.close(fn)
+	}
+}
+
+module.exports = {
+	Opener,
+	AbortableOpener,
+}
