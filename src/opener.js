@@ -47,7 +47,7 @@ class AbortableOpener extends Opener {
 	}
 
 	async open (fn) {
-		await this.super.open(async () => {
+		await super.open(async () => {
 			this._ac = new AbortController()
 			try { await fn(this._ac.signal) }
 			finally { this._ac = null }
@@ -59,7 +59,7 @@ class AbortableOpener extends Opener {
 			this._ac.abort()
 			await this.stateTransitionFinished()
 		}
-		await this.super.close(fn)
+		await super.close(fn)
 	}
 }
 
