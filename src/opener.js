@@ -36,6 +36,9 @@ class Opener {
 			this._state = 'error'
 			throw error
 		}
+		finally {
+			this._stateTransitionPromise = null
+		}
 		this._state = c
 	}
 }
@@ -49,7 +52,7 @@ class AbortableOpener extends Opener {
 	async open (fn) {
 		await super.open(async () => {
 			this._ac = new AbortController()
-			try { await fn(this._ac.signal) }
+			try { await fn(this._ac) }
 			finally { this._ac = null }
 		})
 	}

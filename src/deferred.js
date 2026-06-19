@@ -19,7 +19,7 @@ class Deferred {
 			const error = new Error("invalid state")
 			error.state = this._state
 			error.params = this._params
-			error.callback = this._callback
+			error.callback = callback
 			throw error
 		}
 

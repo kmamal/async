@@ -1,39 +1,28 @@
 
 class TaskQueue {
 	constructor () {
-		this._queue = []
-		this._promise = null
+		this._chain = Promise.resolve()
+		this._size = 0
 	}
 
-	size () { return this._queue.length }
+	size () { return this._size }
 
 	run (fn) {
-		return new Promise((resolve, reject) => {
-			this._queue.push({ fn, resolve, reject })
-			this._startRunning()
-		})
+		this._size++
+		const result = this._chain.then(fn)
+		this._chain = result
+			.catch(() => {})
+			.finally(() => { this._size-- })
+		return result
 	}
 
-	async _startRunning () {
-		if (this._promise) { return }
-		let done
-		this._promise = new Promise((resolve) => { done = resolve })
-
-		while (this._queue.length > 0) {
-			const { fn, resolve, reject } = this._queue.shift()
-			try {
-				resolve(await fn())
-			}
-			catch (error) {
-				reject(error)
-			}
+	async empty () {
+		while (true) {
+			const chain = this._chain
+			await chain
+			if (this._chain === chain) { return }
 		}
-
-		done()
-		this._promise = null
 	}
-
-	empty () { return this._promise }
 }
 
 module.exports = { TaskQueue }
